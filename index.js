@@ -45,20 +45,20 @@ app.use(function (req, res, next) {
 });
 
 /**********user */
+var routes = require('./routes');
 var user = require('./routes/user');
 var common = require('./routes/common');
 var challenge = require('./routes/challenge');
 
 /*---------------------------User Routes------------------------------*/
-app.get('/', user.index);
 app.post('/signup', user.signup);
 app.post('/signin', user.signin);
 
 /*---------------------------Challenge Routes------------------------------*/
-app.get('/getChallanges', challenge.getChallanges);
+app.get('/getChallenges', challenge.getChallenges);
 
-
-
+/*---------------------------Challenge Routes------------------------------*/
+app.get('/', routes.apiview);
 
 http.createServer(app).listen(app.get('port'), function () {
 	console.log('Express server listening on port ' + app.get('port'));

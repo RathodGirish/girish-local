@@ -2,9 +2,9 @@ var Model = require('../models/model');
 var CHALLENGE_COLLECTION = Model.challenges;
 var common = require('./common');
 
-exports.getChallanges = _getChallanges;
+exports.getChallenges = _getChallenges;
 
-function _getChallanges(req, res, next) {
+function _getChallenges(req, res, next) {
     var json = {};
     var query = {};
     CHALLENGE_COLLECTION.find(function (err, challenges) {

@@ -3,78 +3,49 @@ var USER_COLLECTION = userModel.user;
 var bcrypt = require('bcryptjs');
 var common = require('./common');
 
-exports.index = _index;
 exports.signup = _signup;
 exports.signin = _signin;
 
-function _index(req, res, next) {
-    res.render('apiview');
-}
-
 function _signup(req, res, next) {
-
     var email = req.body.email;
     var password = req.body.password;
-    var provider = req.body.provider;
-    var provider_details = req.body.provider_details;
     var json = {};
 
-    if (!common.isUndefined(provider) || (!common.isUndefined(email) && !common.isUndefined(password))) {
+    if (!common.isUndefined(email) && !common.isUndefined(password)) {
 
-        if (!common.isUndefined(provider)) {
-            var newUser = new USER_COLLECTION({
-                provider: provider,
-                provider_details: provider_details,
-                email: "",
-                password: ""
-            });
+        var query = { email: email };
+        USER_COLLECTION.find(query, {}, function (err, user) {
 
-            newUser.save(function (err, result) {
-                if (err) {
-                    json.status = '0';
-                    json.result = { 'Error': err };
-                    res.send(json);
-                } else {
-                    json.status = '1';
-                    json.result = { 'Message': "User is created successfully." };
-                    res.send(json);
-                }
-            });
-        } else {
-            var query = { email: email };
-            USER_COLLECTION.find(query, {}, function (err, user) {
+            if (err || Object.keys(user).length) {
+                json.status = '0';
+                json.result = { 'Error': "Email is already taken." };
+                res.send(json);
+            } else {
+                var newUser = new USER_COLLECTION({
+                    email: email,
+                    password: password,
+                    provider: "",
+                    provider_details: []
+                });
 
-                if (err || Object.keys(user).length) {
-                    json.status = '0';
-                    json.result = { 'Error': "Email is already taken." };
-                    res.send(json);
-                } else {
-                    var newUser = new USER_COLLECTION({
-                        email: email,
-                        password: password,
-                        provider: "",
-                        provider_details: []
-                    });
+                common.saltAndHash(req, res, password, function (endryptedPassword) {
+                    newUser.password = endryptedPassword;
+                });
 
-                    common.saltAndHash(req, res, password, function (endryptedPassword) {
-                        newUser.password = endryptedPassword;
-                    });
+                newUser.save(function (err, result) {
+                    if (err) {
+                        json.status = '0';
+                        json.result = { 'Error': err };
+                        res.send(json);
+                    } else {
+                        json.status = '1';
+                        json.result = { 'Message': "You are registered successfully!" };
+                        res.send(json);
+                    }
+                });
+            }
+        });
 
-                    newUser.save(function (err, result) {
-                        if (err) {
-                            json.status = '0';
-                            json.result = { 'Error': err };
-                            res.send(json);
-                        } else {
-                            json.status = '1';
-                            // json.result = { 'Message': "User " + newUser.email + " is created successfully." };
-                            json.result = { 'Message': "You are registered successfully!" };
-                            res.send(json);
-                        }
-                    });
-                }
-            });
-        }
     } else {
         json.status = '0';
         json.result = { 'Message': "Sign up details are not correct." };
@@ -83,9 +54,10 @@ function _signup(req, res, next) {
 }
 
 function _signin(req, res, next) {
+    console.log("sigin called : " + req.body.email + " password : " + req.body.password + " is_social_login : " + req.body.is_social_login);
+    var json = {};
     var email = req.body.email;
     var password = req.body.password;
-    var json = {};
     var is_social_login = req.body.is_social_login;
     var provider = req.body.provider;
     var provider_details = req.body.provider_details;
@@ -110,7 +82,7 @@ function _signin(req, res, next) {
             Provider_Details[0].expiresIn = provider_details.expiresIn;
             Provider_Details[0].session_key = provider_details.session_key;
             // console.log("Provider_Details.userId : " + Provider_Details.userId);
-            
+
         } else {
             Provider_Details[0] = provider_details;
             Provider_Details[0].userId = Provider_Details[0].userId.toString();
@@ -161,12 +133,18 @@ function _signin(req, res, next) {
         });
     } else {
         USER_COLLECTION.findOne({ "email": email }, function (err, user) {
+            console.log("err : " + JSON.stringify(err));
+            console.log("user : " + JSON.stringify(user));
+
             if (err || common.isUndefined(user) || Object.keys(user).length <= 0) {
+                console.log("if called :");
                 json.status = '0';
                 json.result = { 'Error': "User not found." };
                 res.send(json);
             } else {
                 common.validatePassword(req, res, req.body.password, user.password, function (err, result) {
+                    console.log("else called result : " + JSON.stringify(result));
+                    console.log("else called err : " + JSON.stringify(err));
                     if (result) {
                         json.status = '1';
                         json.result = { 'Message': "You are logged in successfully." };
