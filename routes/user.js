@@ -3,8 +3,13 @@ var USER_COLLECTION = userModel.user;
 var bcrypt = require('bcryptjs');
 var common = require('./common');
 
+exports.index = _index;
 exports.signup = _signup;
 exports.signin = _signin;
+
+function _index(req, res, next) {
+    res.render('apiview');
+}
 
 function _signup(req, res, next) {
 
