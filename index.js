@@ -11,7 +11,7 @@ var app = express();
 mongoose.connect(database.url);
 var db = mongoose.connection;
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 1337);
 
 app.use(bodyParser.json());
 app.use(logger('dev'));
