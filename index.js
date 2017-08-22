@@ -1,25 +1,37 @@
 var express = require('express');
 var http = require('http');
+var path = require('path');
+var util = require('util');
 var bodyParser = require('body-parser');
-var path        =  	   require('path');
-var static      =      require( 'serve-static' );
 var jsonParser = bodyParser.json();
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var database = require('./config/database'); 	// Get configuration file
+var static = require('serve-static');
 var app = express();
+var routes = require('./routes');
+var session = require('client-sessions');
+var https = require('https');
+
+var fs = require('fs');
 
 //Connection with Database
 mongoose.connect(database.url);
 var db = mongoose.connection;
-
+//app.engine('jade',engine);
 app.set('port', process.env.PORT || 1337);
-app.set('views',path.join(__dirname,'views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use( static( path.join( __dirname, 'public' )));
-app.use(bodyParser.json());
-app.use(logger('dev'));
-app.use(bodyParser());
+app.use(static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.logger('dev'));
+app.use(express.multipart());
+app.use(express.urlencoded());
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.cookieParser('secret'));
+app.use(express.session());
+
 
 app.use(function (req, res, next) {
 

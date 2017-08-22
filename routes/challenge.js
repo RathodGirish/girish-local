@@ -10,9 +10,9 @@ function _getChallenges(req, res, next) {
     CHALLENGE_COLLECTION.find(function (err, challenges) {
         console.log("err : " + err);
         console.log("challenge : " + challenges.length);
-        if (err || challenges.length <= 0) {
+        if (err) {
             json.status = '0';
-            json.result = { 'Error': "No Challenge Found." };
+            json.result = { 'Error': JSON.stringify(err) };
             res.send(json);
         } else {
             json.status = '1';

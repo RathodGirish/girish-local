@@ -1,5 +1,5 @@
 {
-  "name": "challengeapp",
+  "name": "pulseapp",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -12,9 +12,9 @@
     "async": "^1.5.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.15.0",
+    "client-sessions": "^0.7.0",
     "ejs": "^1.0.0",
     "express": "^3.20.2",
-    "https": "^1.0.0",
     "json": "^9.0.3",
     "mongodb": "^2.1.7",
     "mongoose": "^4.4.3",
