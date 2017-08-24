@@ -1,3 +1,25 @@
+// var express = require('express');
+// var http = require('http');
+// var bodyParser = require('body-parser');
+// var jsonParser = bodyParser.json();
+// var logger = require('morgan');
+// var mongoose = require('mongoose');
+// var database = require('./config/database'); 	// Get configuration file
+// var app = express();
+
+// //Connection with Database
+// mongoose.connect(database.url);
+// var db = mongoose.connection;
+
+// app.set('port', process.env.PORT || 3000);
+
+// app.use(bodyParser.json());
+// app.use(logger('dev'));
+// app.use(bodyParser());
+
+
+
+
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -68,6 +90,7 @@ app.post('/signin', user.signin);
 
 /*---------------------------Challenge Routes------------------------------*/
 app.get('/getChallenges', challenge.getChallenges);
+app.post('/addChallenges', challenge.addChallenges);
 
 /*---------------------------Challenge Routes------------------------------*/
 app.get('/', routes.apiview);

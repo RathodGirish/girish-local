@@ -38,9 +38,12 @@ function _signup(req, res, next) {
                         json.result = { 'Error': err };
                         res.send(json);
                     } else {
+
                         json.status = '1';
+                        json.userID = result._id
                         json.result = { 'Message': "You are registered successfully!" };
                         res.send(json);
+                        console.log("json : " + JSON.stringify(json));
                     }
                 });
             }
@@ -81,6 +84,7 @@ function _signin(req, res, next) {
             Provider_Details[0].token = provider_details.accessToken;
             Provider_Details[0].expiresIn = provider_details.expiresIn;
             Provider_Details[0].session_key = provider_details.session_key;
+
             // console.log("Provider_Details.userId : " + Provider_Details.userId);
 
         } else {
@@ -109,8 +113,11 @@ function _signin(req, res, next) {
                         res.send(json);
                     } else {
                         json.status = '1';
+                        json.userID = result._id
                         json.result = { 'Message': "You are login successfully!" };
                         res.send(json);
+                        // console.log("json : " + JSON.stringify(json));
+                        
                     }
                 });
             } else {
@@ -125,8 +132,11 @@ function _signin(req, res, next) {
                         res.send(json);
                     } else {
                         json.status = '1';
+                        json.userID = user._id
                         json.result = { 'Message': "You are login successfully!" };
                         res.send(json);
+                        // console.log("json : " + JSON.stringify(json));
+                        
                     }
                 });
             }
@@ -147,8 +157,11 @@ function _signin(req, res, next) {
                     console.log("else called err : " + JSON.stringify(err));
                     if (result) {
                         json.status = '1';
+                        json.userID = user._id
                         json.result = { 'Message': "You are logged in successfully." };
                         res.send(json);
+                        // console.log("json : " + JSON.stringify(json));
+                        
                     } else {
                         json.status = '0';
                         json.result = { 'Error': "Incorrect Password." };

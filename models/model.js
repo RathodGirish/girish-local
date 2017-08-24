@@ -47,6 +47,18 @@ var challenges = new Schema({
     image: {
         type: String
     },
+    categories: {
+        type: String
+    },
+    userId: {
+        type: String
+    },
+    userName: {
+        type: String
+    },
+    location: {
+        type: String
+    },
     latitude: {
         type: String
     },
