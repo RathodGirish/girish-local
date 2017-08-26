@@ -78,7 +78,7 @@
             </table>
         </td>
 
-
+        <!-- To Signin User -->
         <tr class="api-row">
             <td>#</td>
             <td class="post">POST</td>
@@ -130,7 +130,7 @@
             <td>#</td>
             <td class="get">GET</td>
             <td>http://<span class="hostName"></span>/getChallenges</td>
-            <td>challenges</td>
+            <td>challenge</td>
         </tr>
         <td colspan="3">
             <h5>Description :</h5>
@@ -140,7 +140,206 @@
             </p>
         </td>
 
+        <!--To add Challange-->
+        <tr class="api-row">
+            <td>#</td>
+            <td class="post">POST</td>
+            <td>http://<span class="hostName"></span>/addChallenge</td>
+            <td>challenge</td>
+        </tr>
+        <td colspan="3">
+            <h5>Description :</h5>
+            <p>To add new challenge</p>
+            <h5>Friendly Url :</h5>
+            <p>http://<span class="hostName"></span>/addChallenge</p>
+            <h5>Parameters :</h5>
+            <table>
+                <tr class="liu">
+                    <td>Parameter Name</td>
+                    <td>DataType</td>
+                    <td>Description</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>items</td>
+                    <td>array</td>
+                    <td>challenge items</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>name</td>
+                    <td>string</td>
+                    <td>challenge name</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>frequency</td>
+                    <td>string</td>
+                    <td>challenge frequency</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>categories</td>
+                    <td>string</td>
+                    <td>challenge categories</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>type</td>
+                    <td>string</td>
+                    <td>challenge type</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>image</td>
+                    <td>Base 64 Data</td>
+                    <td>challenge image</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>latitude</td>
+                    <td>string</td>
+                    <td>challenge latitude</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>longitude</td>
+                    <td>string</td>
+                    <td>challenge longitude</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>userId</td>
+                    <td>string</td>
+                    <td>challenge userId</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>organizerName</td>
+                    <td>string</td>
+                    <td>challenge organizerName</td>
+                </tr>
+                <tr></tr>
+            </table>
+        </td>
+
+        <!--To Edit Challange By Id-->
+        <tr class="api-row">
+            <td>#</td>
+            <td class="post">POST</td>
+            <td>http://<span class="hostName"></span>/editChallengeById/:id</td>
+            <td>challenge</td>
+        </tr>
+        <td colspan="3">
+            <h5>Description :</h5>
+            <p>To Edit Challange By Id</p>
+            <h5>Friendly Url :</h5>
+            <p>http://<span class="hostName"></span>/editChallengeById/:id</p>
+            <h5>Parameters :</h5>
+            <table>
+                <tr class="liu">
+                    <td>Parameter Name</td>
+                    <td>DataType</td>
+                    <td>Description</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>items</td>
+                    <td>array</td>
+                    <td>challenge items</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>name</td>
+                    <td>string</td>
+                    <td>challenge name</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>frequency</td>
+                    <td>string</td>
+                    <td>challenge frequency</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>categories</td>
+                    <td>string</td>
+                    <td>challenge categories</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>type</td>
+                    <td>string</td>
+                    <td>challenge type</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>image</td>
+                    <td>Base 64 Data</td>
+                    <td>challenge image</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>isImageUpdate</td>
+                    <td>Image updated or not</td>
+                    <td>boolean</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>latitude</td>
+                    <td>string</td>
+                    <td>challenge latitude</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>longitude</td>
+                    <td>string</td>
+                    <td>challenge longitude</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>userId</td>
+                    <td>string</td>
+                    <td>challenge userId</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>organizerName</td>
+                    <td>string</td>
+                    <td>challenge organizerName</td>
+                </tr>
+                <tr></tr>
+            </table>
+        </td>
+
+        <!--To Remove Challange By Id-->
+        <tr class="api-row">
+            <td>#</td>
+            <td class="post">POST</td>
+            <td>http://<span class="hostName"></span>/removeChallengeById/:id</td>
+            <td>challenge</td>
+        </tr>
+        <td colspan="3">
+            <h5>Description :</h5>
+            <p>To Remove Challange By Id</p>
+            <h5>Friendly Url :</h5>
+            <p>http://<span class="hostName"></span>/removeChallengeById/:id</p>
+            <h5>Parameters :</h5>
+            <table>
+                <tr class="liu">
+                    <td>Parameter Name</td>
+                    <td>DataType</td>
+                    <td>Description</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>id</td>
+                    <td>string</td>
+                    <td>Id of Challenge</td>
+                </tr>
+                <tr></tr>
+            </table>
+        </td>
     </table>
 </div>
-
 </html>

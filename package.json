@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^1.5.2",
+    "azure-blob-store": "^1.0.7",
     "azure-storage": "^2.4.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.15.0",
@@ -23,6 +24,7 @@
     "mongoose": "^4.4.3",
     "morgan": "^1.6.1",
     "path": "^0.12.7",
+    "sendgrid": "^5.2.2",
     "serve-static": "^1.10.2",
     "url": "^0.11.0",
     "uuid": "^3.1.0"

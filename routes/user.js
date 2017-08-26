@@ -6,6 +6,10 @@ var common = require('./common');
 exports.signup = _signup;
 exports.signin = _signin;
 
+/*****
+ * TODO : Singup New User
+ * METHOD : POST
+ */
 function _signup(req, res, next) {
     var email = req.body.email;
     var password = req.body.password;
@@ -56,6 +60,11 @@ function _signup(req, res, next) {
     }
 }
 
+
+/*****
+ * TODO : Singin User
+ * METHOD : POST
+ */
 function _signin(req, res, next) {
     console.log("sigin called : " + req.body.email + " password : " + req.body.password + " is_social_login : " + req.body.is_social_login);
     var json = {};
@@ -64,11 +73,7 @@ function _signin(req, res, next) {
     var is_social_login = req.body.is_social_login;
     var provider = req.body.provider;
     var provider_details = req.body.provider_details;
-    // console.log("provider_details : " + JSON.stringify(provider_details));
     if (is_social_login) {
-
-        // provider_details.userId = provider_details.userId.toString();
-        console.log("provider_details.userId : " + provider_details.userID);
 
         var query = {
             "provider": provider
@@ -77,16 +82,11 @@ function _signin(req, res, next) {
         query.provider_details = (provider == "twitter") ? { $elemMatch: { userId: provider_details.userId.toString() } } : { $elemMatch: { userId: provider_details.userID } };
         var Provider_Details = [];
         if (provider == "facebook") {
-            // provider_details = {};
-            // provider_details = provider_details.authResponse;
             Provider_Details[0] = {};
             Provider_Details[0].userId = provider_details.userID;
             Provider_Details[0].token = provider_details.accessToken;
             Provider_Details[0].expiresIn = provider_details.expiresIn;
             Provider_Details[0].session_key = provider_details.session_key;
-
-            // console.log("Provider_Details.userId : " + Provider_Details.userId);
-
         } else {
             Provider_Details[0] = provider_details;
             Provider_Details[0].userId = Provider_Details[0].userId.toString();
@@ -96,7 +96,6 @@ function _signin(req, res, next) {
         console.log("query : " + JSON.stringify(query))
         USER_COLLECTION.findOne(query, function (err, user) {
             console.log("user : " + JSON.stringify(user));
-            // console.log("err : " + JSON.stringify(err));
             if (err || common.isUndefined(user) || Object.keys(user).length <= 0) {
 
                 var newUser = new USER_COLLECTION({
@@ -116,8 +115,6 @@ function _signin(req, res, next) {
                         json.userID = result._id
                         json.result = { 'Message': "You are login successfully!" };
                         res.send(json);
-                        // console.log("json : " + JSON.stringify(json));
-                        
                     }
                 });
             } else {
@@ -135,8 +132,6 @@ function _signin(req, res, next) {
                         json.userID = user._id
                         json.result = { 'Message': "You are login successfully!" };
                         res.send(json);
-                        // console.log("json : " + JSON.stringify(json));
-                        
                     }
                 });
             }
@@ -160,15 +155,12 @@ function _signin(req, res, next) {
                         json.userID = user._id
                         json.result = { 'Message': "You are logged in successfully." };
                         res.send(json);
-                        // console.log("json : " + JSON.stringify(json));
-                        
                     } else {
                         json.status = '0';
                         json.result = { 'Error': "Incorrect Password." };
                         res.send(json);
                     }
                 });
-
             }
         });
     }

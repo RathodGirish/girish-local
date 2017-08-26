@@ -1,4 +1,6 @@
 var crypto = require('crypto');
+var CONSTANT = require('../config/constant');
+var azure = require('azure-storage');
 
 exports.generateSalt = _generateSalt;
 exports.saltAndHash = _saltAndHash;
@@ -7,6 +9,7 @@ exports.validatePassword = _validatePassword;
 exports.generateToken = _generateToken;
 exports.isUserValid = _isUserValid;
 exports.isUndefined = _isUndefined;
+exports.deleteImage = _deleteImage;
 
 function _generateSalt() {
     var set = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
@@ -51,10 +54,8 @@ function _isUserValid(req, res, callback) {
     } else {
         var newToken = exports.generateToken(email);
         if (newToken == token) {
-            // callback(null, "Valid User", next);
             callback();
         } else {
-            // callback("Invalid Token", null);
             json.error = "Invalid Token";
             res.send(json);
         }
@@ -67,4 +68,16 @@ function _isUndefined(str) {
     } else {
         return false;
     }
+
+}
+
+function _deleteImage(imageName, callback) {
+    var blobService = azure.createBlobService(CONSTANT.BLOB_CONNECTION_STRING);
+    blobService.deleteBlob(CONSTANT.AZURE_BLOB_CONTAINER_NAME, imageName.split(CONSTANT.AZURE_BLOB_IMAGE_PATH)[1], function (error, response) {
+        if (error) {
+            callback(error, null)
+        } else {
+            callback(null, "Image remove successfully")
+        }
+    });
 }

@@ -1,25 +1,3 @@
-// var express = require('express');
-// var http = require('http');
-// var bodyParser = require('body-parser');
-// var jsonParser = bodyParser.json();
-// var logger = require('morgan');
-// var mongoose = require('mongoose');
-// var database = require('./config/database'); 	// Get configuration file
-// var app = express();
-
-// //Connection with Database
-// mongoose.connect(database.url);
-// var db = mongoose.connection;
-
-// app.set('port', process.env.PORT || 3000);
-
-// app.use(bodyParser.json());
-// app.use(logger('dev'));
-// app.use(bodyParser());
-
-
-
-
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -40,16 +18,16 @@ var fs = require('fs');
 //Connection with Database
 mongoose.connect(database.url);
 var db = mongoose.connection;
-//app.engine('jade',engine);
+
 app.set('port', process.env.PORT || 1337);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(static(path.join(__dirname, 'public')));
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 app.use(express.logger('dev'));
 app.use(express.multipart());
-app.use(express.urlencoded());
-app.use(express.bodyParser());
+app.use(express.urlencoded({limit: '50mb'}));
+app.use(express.bodyParser({limit: '50mb', extended: true}));
 app.use(express.methodOverride());
 app.use(express.cookieParser('secret'));
 app.use(express.session());
@@ -78,7 +56,7 @@ app.use(function (req, res, next) {
 	next();
 });
 
-/**********user */
+/********** Routes Files ************ */
 var routes = require('./routes');
 var user = require('./routes/user');
 var common = require('./routes/common');
@@ -90,7 +68,12 @@ app.post('/signin', user.signin);
 
 /*---------------------------Challenge Routes------------------------------*/
 app.get('/getChallenges', challenge.getChallenges);
-app.post('/addChallenges', challenge.addChallenges);
+app.get('/getChallengesByuserId', challenge.getChallengesByuserId);
+app.get('/getChallengeById', challenge.getChallengeById);
+app.post('/addChallenge', challenge.addChallenge);
+app.post('/editChallengeById/:id', challenge.editChallengeById);
+app.post('/removeChallengeById/:id', challenge.removeChallengeById);
+app.post('/sendInvitation', challenge.sendInvitation);
 
 /*---------------------------Challenge Routes------------------------------*/
 app.get('/', routes.apiview);

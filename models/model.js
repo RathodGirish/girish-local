@@ -53,7 +53,7 @@ var challenges = new Schema({
     userId: {
         type: String
     },
-    userName: {
+    organizerName: {
         type: String
     },
     location: {
