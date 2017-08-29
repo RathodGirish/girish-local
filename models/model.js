@@ -41,6 +41,9 @@ var challenges = new Schema({
     frequency: {
         type: String
     },
+    lastDate: {
+        type: String
+    },
     type: {
         type: String
     },

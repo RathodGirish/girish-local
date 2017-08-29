@@ -99,6 +99,7 @@ function _addChallenge(req, res) {
     var userId = req.body.userId;
     var organizerName = req.body.organizerName;
     var location = req.body.location;
+    var lastDate = req.body.lastDate;
 
     var imageName = new Date().getTime() + '.jpeg';
 
@@ -125,6 +126,7 @@ function _addChallenge(req, res) {
                     name: name,
                     frequency: frequency,
                     categories: categories,
+                    lastDate: lastDate,
                     type: type,
                     image: CONSTANT.AZURE_BLOB_IMAGE_PATH + result.name,
                     latitude: latitude,
@@ -160,6 +162,7 @@ function _editChallengeById(req, res) {
     var name = req.body.name;
     var frequency = req.body.frequency;
     var categories = req.body.categories;
+    var lastDate = req.body.lastDate;
     var type = req.body.type;
     var image = req.body.image;
     var isImageUpdate = req.body.isImageUpdate;
@@ -212,6 +215,7 @@ function _editChallengeById(req, res) {
             name: name,
             frequency: frequency,
             categories: categories,
+            lastDate: lastDate,
             type: type,
             image: url,
             latitude: latitude,
@@ -221,8 +225,8 @@ function _editChallengeById(req, res) {
             location: location
         };
 
-        console.log(' challengeId ' + challengeId);
-        console.log(' updateChallengeObject ' + JSON.stringify(updateChallengeObject));
+        // console.log(' challengeId ' + challengeId);
+        // console.log(' updateChallengeObject ' + JSON.stringify(updateChallengeObject));
 
         CHALLENGE_COLLECTION.update({ _id: new ObjectID(challengeId) }, { $set: updateChallengeObject },
             function (err, result) {
@@ -249,6 +253,7 @@ function _editChallengeById(req, res) {
  * TODO : Remove Challenge By Id
  * METHOD : POST
  */
+
 function _removeChallengeById(req, res) {
     var json = {};
     var blobService = azure.createBlobService(CONSTANT.BLOB_CONNECTION_STRING);
@@ -279,33 +284,11 @@ function _removeChallengeById(req, res) {
  * TODO : send Invitation
  * METHOD : POST
  */
+
 function _sendInvitation(req, res) {
     var errorMailId = [];
     var json = {};
     var flage = false;
-    // var helper = require('sendgrid').mail;
-    // var fromEmail = new helper.Email(CONSTANT.EMAIL_ID);
-    // var toEmail = new helper.Email('dev-challenge@serenetechnologies.ca');
-    // var subject = CONSTANT.MAIL_SUBJECT;
-    // var content = new helper.Content('text/html', '<!DOCTYPE html > <html> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <title>PULSE</title> </head> <body style="background:#E6E6E6; margin:0px; padding:0px;"> <table border="0" cellspacing="0" cellpadding="0" align="center" style="width:100%;margin:0 auto; background:#fff;font-family:Open Sans,sans-serif; max-width:600px;"> <tbody> <tr><td style="height:60px;background:#E6E6E6;"> </td></tr> <tr> <td style="background: #222222; height: 50px; padding: 10px 17px"> <table width="100%"> <tr> <td> <a href="#"><img src="https://challenge.blob.core.windows.net/pulse/icon.png" alt="" title="" style="position: absolute;margin-top: -35px;"></a> </td> <td style="text-align:right; margin-right: 10px"> <a href="#" style="width:200px;color:#fff; text-decoration: none">VISIT PULSE APP</a> </td> </tr> </table> </td> </tr> <tr> <td style="font-size:0px;"> <img src="https://challenge.blob.core.windows.net/pulse/sale_2-banner.png" alt="" title="" style="margin-top:-1px" height="250px" width="600"> </td> </tr> <tr><td style="height:40px;"> </td></tr> <tr> <td style="text-align:left; padding:0 50px;"> <h1 style="margin:0px; padding:0px; font-size:30px; color:#4e4e4e; font-weight:600; text-align:center;">Hi </h1> </td> </tr> <tr><td style="height:10px;"> </td></tr> <tr> <td style="text-align:left; padding:0 50px;"> <h3 style="margin:0px; padding:0px; font-size:18px; color:#4e4e4e; font-weight:500; text-align:center; text-transform: uppercase;">Welcome to PULSE</h3> </td> </tr> <tr><td style="height:34px;"> </td></tr> <tr><td style="height:21px;"> </td></tr> <tr> <td> <p style="height:2px;background:#b6b1ab; margin:0px;">  </p> </td> </tr> <tr> <td style="background: #48A59A;padding:20px 30px; font-size: 12px; color: #fff"> <table style="width: 100%"> <tr> <td width="60%"><h2>Follow SeeWhatSeeCanDo</h2></td> <td width="40%; text-align:right"> <table style="width:100%"> <tr style="text-align: right;"> <td><img src="https://challenge.blob.core.windows.net/pulse/fb-black.png" alt="" title="" ></td> <td><img src="https://challenge.blob.core.windows.net/pulse/twiiiter-black.png" alt="" title="" ></td> <td><img src="https://challenge.blob.core.windows.net/pulse/fb-black.png" alt="" title="" ></td> <td><img src="https://challenge.blob.core.windows.net/pulse/twiiiter-black.png" alt="" title="" ></td> </tr> </table> </td> </tr> </table> </td> </tr> <tr> <td style="padding:0; text-align:center; background: #222222; height: 30px"> </td> </tr> <tr><td style="height:60px;background:#E6E6E6;"> </td></tr> </tbody> </table> </body> </html>');
-    // var mail = new helper.Mail(fromEmail, subject, toEmail, content);
-
-    // var sg = require("sendgrid")(CONSTANT.SEND_GRID_API_KEY);
-    // var request = sg.emptyRequest({
-    //     method: 'POST',
-    //     path: '/v3/mail/send',
-    //     body: mail.toJSON()
-    // });
-
-    // sg.API(request, function (error, response) {
-    //     console.log("errr : " + JSON.stringify(error));
-    //     if (error) {
-
-    //     } else {
-    //         console.log("res :" + JSON.stringify(response));
-    //     }
-    // });
-
     req.body.emailIds.forEach(function (element, index) {
         common.sendEmail(element, function (err, data) {
             if (err) {
@@ -319,13 +302,12 @@ function _sendInvitation(req, res) {
                 if (flage) {
                     json.result = { 'Message': "This EmailId not vails" + JSON.stringify(errorMailId) + " Remain All Mail Send Successfully." };
                 } else {
-                    json.result = { 'Message': "All Mail Send successfully." };
+                    json.result = { 'Message': "Invitation Send successfully." };
                 }
                 res.send(json);
             }
         });
     }, this);
-
 }
 
 
