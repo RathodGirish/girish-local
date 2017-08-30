@@ -69,6 +69,7 @@ app.post('/signin', user.signin);
 /*---------------------------Challenge Routes------------------------------*/
 app.get('/getChallenges', challenge.getChallenges);
 app.get('/getChallengesByuserId', challenge.getChallengesByuserId);
+app.get('/getChallengeDetail', challenge.getChallengeDetail);
 app.get('/getChallengeById', challenge.getChallengeById);
 app.post('/addChallenge', challenge.addChallenge);
 app.post('/editChallengeById/:id', challenge.editChallengeById);

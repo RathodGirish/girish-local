@@ -9,6 +9,7 @@ var azure = require('azure-storage');
 
 exports.getChallenges = _getChallenges;
 exports.getChallengesByuserId = _getChallengesByuserId;
+exports.getChallengeDetail = _getChallengeDetail;
 exports.getChallengeById = _getChallengeById;
 exports.addChallenge = _addChallenge;
 exports.sendInvitation = _sendInvitation;
@@ -24,7 +25,8 @@ exports.removeChallengeById = _removeChallengeById;
 function _getChallenges(req, res, next) {
     var json = {};
     var query = {};
-    CHALLENGE_COLLECTION.find(function (err, challenges) {
+    var param = { _id: 1, location: 1, name: 1, organizerName: 1, image: 1, latitude: 1, longitude: 1 };
+    CHALLENGE_COLLECTION.find(query, param, function (err, challenges) {
         console.log("challenge : " + challenges.length);
         if (err) {
             json.status = '0';
@@ -44,8 +46,9 @@ function _getChallenges(req, res, next) {
  */
 function _getChallengesByuserId(req, res, next) {
     var json = {};
+    var param = { _id: 1, name: 1, image: 1, organizerName: 1 }
     var query = { "userId": req.query.userId };
-    CHALLENGE_COLLECTION.find(query, function (err, challenges) {
+    CHALLENGE_COLLECTION.find(query, param, function (err, challenges) {
         console.log("challenge : " + challenges.length);
         if (err) {
             json.status = '0';
@@ -54,6 +57,28 @@ function _getChallengesByuserId(req, res, next) {
         } else {
             json.status = '1';
             json.challenges = challenges;
+            res.send(json);
+        }
+    });
+}
+
+/****
+ * TODO : Get All challenge Detail
+ * METHOD : GET
+ */
+
+function _getChallengeDetail(req, res, next) {
+    var json = {};
+    var param = {}
+    var query = { "_id": new ObjectID(req.query.challengeId) };
+    CHALLENGE_COLLECTION.findOne(query, param, function (err, challenge) {
+        if (err) {
+            json.status = '0';
+            json.result = { 'Error': JSON.stringify(err) };
+            res.send(json);
+        } else {
+            json.status = '1';
+            json.challenge = challenge;
             res.send(json);
         }
     });
@@ -102,7 +127,7 @@ function _addChallenge(req, res) {
     var lastDate = req.body.lastDate;
 
     var imageName = new Date().getTime() + '.jpeg';
-
+    console.log("lastDate : " + lastDate);
     var rawdata = image;
     var matches = rawdata.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
     var buffer = new Buffer(matches[2], 'base64');
@@ -142,6 +167,7 @@ function _addChallenge(req, res) {
                         json.result = { 'Error': err };
                         res.send(json);
                     } else {
+                        console.log("data : " + JSON.stringify(data));
                         json.status = '1';
                         json.result = { 'Message': "Challenge added successfully !!" };
                         res.send(json);
@@ -171,7 +197,7 @@ function _editChallengeById(req, res) {
     var userId = req.body.userId;
     var organizerName = req.body.organizerName;
     var location = req.body.location;
-
+    console.log("lastdate : " + lastDate);
     if (isImageUpdate) {
 
         common.deleteImage(req.body.imageName, function (err, data) {
