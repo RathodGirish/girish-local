@@ -35,6 +35,7 @@ function _getChallenges(req, res, next) {
         } else {
             json.status = '1';
             json.challenges = challenges;
+            json.variable = process.env.NODE_ENV;
             res.send(json);
         }
     });
