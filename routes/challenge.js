@@ -69,7 +69,7 @@ function _getChallengesByuserId(req, res, next) {
 
 function _getChallengeDetail(req, res, next) {
     var json = {};
-    var param = {}
+    var param = {};
     var query = { "_id": new ObjectID(req.query.challengeId) };
     CHALLENGE_COLLECTION.findOne(query, param, function (err, challenge) {
         if (err) {
@@ -125,6 +125,7 @@ function _addChallenge(req, res) {
     var organizerName = req.body.organizerName;
     var location = req.body.location;
     var lastDate = req.body.lastDate;
+    var desc = req.body.desc;
 
     var imageName = new Date().getTime() + '.jpeg';
     console.log("lastDate : " + lastDate);
@@ -158,7 +159,8 @@ function _addChallenge(req, res) {
                     longitude: longitude,
                     userId: userId,
                     organizerName: organizerName,
-                    location: location
+                    location: location,
+                    desc: desc
                 });
 
                 newChallenge.save(function (err, data) {
@@ -197,6 +199,7 @@ function _editChallengeById(req, res) {
     var userId = req.body.userId;
     var organizerName = req.body.organizerName;
     var location = req.body.location;
+    var desc = req.body.desc;
     console.log("lastdate : " + lastDate);
     if (isImageUpdate) {
 
@@ -248,7 +251,8 @@ function _editChallengeById(req, res) {
             longitude: longitude,
             userId: userId,
             organizerName: organizerName,
-            location: location
+            location: location,
+            desc: desc
         };
 
         // console.log(' challengeId ' + challengeId);

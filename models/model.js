@@ -53,6 +53,9 @@ var challenges = new Schema({
     categories: {
         type: String
     },
+    desc: {
+        type: String
+    },
     userId: {
         type: String
     },
