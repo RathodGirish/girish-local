@@ -3,8 +3,5 @@ module.exports = {
     AZURE_BLOB_IMAGE_PATH: "https://challenge.blob.core.windows.net/pulse/",
     AZURE_BLOB_CONTAINER_NAME: "pulse",
     MAIL_SUBJECT: "Invitation",
-    EMAIL_ID: "dev-challenge@serenetechnologies.ca",
-    SEND_GRID_API_KEY: "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"
-
-
+    EMAIL_ID: "dev-challenge@serenetechnologies.ca"
 }

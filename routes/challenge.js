@@ -6,7 +6,6 @@ var CONSTANT = require('../config/constant');
 var azure = require('azure-storage');
 
 
-
 exports.getChallenges = _getChallenges;
 exports.getChallengesByuserId = _getChallengesByuserId;
 exports.getChallengeDetail = _getChallengeDetail;
@@ -35,7 +34,6 @@ function _getChallenges(req, res, next) {
         } else {
             json.status = '1';
             json.challenges = challenges;
-            json.variable = process.env.SENDG_KEY;
             res.send(json);
         }
     });
@@ -45,6 +43,7 @@ function _getChallenges(req, res, next) {
  * TODO : Get All challenge with user id
  * METHOD : GET
  */
+
 function _getChallengesByuserId(req, res, next) {
     var json = {};
     var param = { _id: 1, name: 1, image: 1, organizerName: 1 }
@@ -89,6 +88,7 @@ function _getChallengeDetail(req, res, next) {
  * TODO : Get All challenge with id
  * METHOD : GET
  */
+
 function _getChallengeById(req, res, next) {
     var json = {};
     var query = { "_id": new ObjectID(req.query.challengeId) };
@@ -112,6 +112,7 @@ function _getChallengeById(req, res, next) {
  * TODO : ADD New Challenge
  * METHOD : POST
  */
+
 function _addChallenge(req, res) {
     var json = {};
     var items = req.body.items;
@@ -184,6 +185,7 @@ function _addChallenge(req, res) {
  * TODO : EDIT Challenge By Id
  * METHOD : POST
  */
+
 function _editChallengeById(req, res) {
     var json = {};
     var challengeId = req.param('id');
