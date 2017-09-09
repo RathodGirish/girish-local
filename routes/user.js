@@ -1,7 +1,7 @@
 var userModel = require('../models/model');
 var USER_COLLECTION = userModel.user;
 var bcrypt = require('bcryptjs');
-var common = require('./common');
+var COMMON = require('./common');
 
 exports.signup = _signup;
 exports.signin = _signin;
@@ -15,7 +15,7 @@ function _signup(req, res, next) {
     var password = req.body.password;
     var json = {};
 
-    if (!common.isUndefined(email) && !common.isUndefined(password)) {
+    if (!COMMON.isUndefined(email) && !COMMON.isUndefined(password)) {
 
         var query = { email: email };
         USER_COLLECTION.find(query, {}, function (err, user) {
@@ -32,7 +32,7 @@ function _signup(req, res, next) {
                     provider_details: []
                 });
 
-                common.saltAndHash(req, res, password, function (endryptedPassword) {
+                COMMON.saltAndHash(req, res, password, function (endryptedPassword) {
                     newUser.password = endryptedPassword;
                 });
 
@@ -96,7 +96,7 @@ function _signin(req, res, next) {
         console.log("query : " + JSON.stringify(query))
         USER_COLLECTION.findOne(query, function (err, user) {
             console.log("user : " + JSON.stringify(user));
-            if (err || common.isUndefined(user) || Object.keys(user).length <= 0) {
+            if (err || COMMON.isUndefined(user) || Object.keys(user).length <= 0) {
 
                 var newUser = new USER_COLLECTION({
                     provider: provider,
@@ -141,13 +141,13 @@ function _signin(req, res, next) {
             console.log("err : " + JSON.stringify(err));
             console.log("user : " + JSON.stringify(user));
 
-            if (err || common.isUndefined(user) || Object.keys(user).length <= 0) {
+            if (err || COMMON.isUndefined(user) || Object.keys(user).length <= 0) {
                 console.log("if called :");
                 json.status = '0';
                 json.result = { 'Error': "User not found." };
                 res.send(json);
             } else {
-                common.validatePassword(req, res, req.body.password, user.password, function (err, result) {
+                COMMON.validatePassword(req, res, req.body.password, user.password, function (err, result) {
                     console.log("else called result : " + JSON.stringify(result));
                     console.log("else called err : " + JSON.stringify(err));
                     if (result) {

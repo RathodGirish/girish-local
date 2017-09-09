@@ -1,7 +1,7 @@
 var Model = require('../models/model');
 var ObjectID = require('mongodb').ObjectID;
 var CHALLENGE_COLLECTION = Model.challenges;
-var common = require('./common');
+var COMMON = require('./common');
 var CONSTANT = require('../config/constant');
 var azure = require('azure-storage');
 
@@ -20,7 +20,6 @@ exports.removeChallengeById = _removeChallengeById;
  * TODO : Get All challenge with  location
  * METHOD : GET
  */
-
 function _getChallenges(req, res, next) {
     var json = {};
     var query = {};
@@ -43,7 +42,6 @@ function _getChallenges(req, res, next) {
  * TODO : Get All challenge with user id
  * METHOD : GET
  */
-
 function _getChallengesByuserId(req, res, next) {
     var json = {};
     var param = { _id: 1, name: 1, image: 1, organizerName: 1 }
@@ -66,7 +64,6 @@ function _getChallengesByuserId(req, res, next) {
  * TODO : Get All challenge Detail
  * METHOD : GET
  */
-
 function _getChallengeDetail(req, res, next) {
     var json = {};
     var param = {};
@@ -88,7 +85,6 @@ function _getChallengeDetail(req, res, next) {
  * TODO : Get All challenge with id
  * METHOD : GET
  */
-
 function _getChallengeById(req, res, next) {
     var json = {};
     var query = { "_id": new ObjectID(req.query.challengeId) };
@@ -112,7 +108,6 @@ function _getChallengeById(req, res, next) {
  * TODO : ADD New Challenge
  * METHOD : POST
  */
-
 function _addChallenge(req, res) {
     var json = {};
     var items = req.body.items;
@@ -185,7 +180,6 @@ function _addChallenge(req, res) {
  * TODO : EDIT Challenge By Id
  * METHOD : POST
  */
-
 function _editChallengeById(req, res) {
     var json = {};
     var challengeId = req.param('id');
@@ -206,7 +200,7 @@ function _editChallengeById(req, res) {
     console.log("lastdate : " + lastDate);
     if (isImageUpdate) {
 
-        common.deleteImage(req.body.imageName, function (err, data) {
+        COMMON.deleteImage(req.body.imageName, function (err, data) {
             if (err) {
                 json.status = '0';
                 json.result = { 'Error': JSON.stringify(err) };
@@ -286,7 +280,6 @@ function _editChallengeById(req, res) {
  * TODO : Remove Challenge By Id
  * METHOD : POST
  */
-
 function _removeChallengeById(req, res) {
     var json = {};
     var blobService = azure.createBlobService(CONSTANT.BLOB_CONNECTION_STRING);
@@ -297,7 +290,7 @@ function _removeChallengeById(req, res) {
             json.result = { 'Error': removeChallengeError };
             res.send(json);
         } else {
-            common.deleteImage(req.body.imageName, function (err, data) {
+            COMMON.deleteImage(req.body.imageName, function (err, data) {
                 if (err) {
                     json.status = '0';
                     json.result = { 'Error': JSON.stringify(err) };
@@ -317,31 +310,44 @@ function _removeChallengeById(req, res) {
  * TODO : send Invitation
  * METHOD : POST
  */
-
 function _sendInvitation(req, res) {
+    var emailIds = req.body.emailIds;
     var errorMailId = [];
     var json = {};
     var flage = false;
-    req.body.emailIds.forEach(function (element, index) {
-        common.sendEmail(element, function (err, data) {
-            if (err) {
+    
+    if(!emailIds || emailIds.length <= 0){
+        json.status = '0';
+        json.result = { 'Message': "Email Id is missing." };
+        res.send(json);
+    } else {
+        emailIds.forEach(function (element, index) {
+            if(!COMMON.isValidEmail(element)){
                 errorMailId.push(element);
                 flage = true;
+            } else {
+                COMMON.sendEmail(element, function (err, data) {
+                    console.log('err ' + JSON.stringify(err));
+                    if (err) {
+                        // errorMailId.push(element);
+                        // flage = true;
+                        json.status = '0';
+                        json.result = { 'Message': "Fail to send email from server side." };
+                        res.send(json);
+                    }
+                    
+                    console.log("mail data : " + JSON.stringify(data) + " element : " + element);
+                    if (index + 1 == req.body.emailIds.length) {
+                        json.status = '1';
+                        if (flage) {
+                            json.result = { 'Message': "This EmailId not valid " + JSON.stringify(errorMailId) + " Remain All Mail Send Successfully." };
+                        } else {
+                            json.result = { 'Message': "Invitation Send successfully." };
+                        }
+                        res.send(json);
+                    }
+                });
             }
-            console.log(data.statusCode);
-            console.log("mail data : " + JSON.stringify(data) + " element : " + element);
-            if (index + 1 == req.body.emailIds.length) {
-                json.status = '1';
-                if (flage) {
-                    json.result = { 'Message': "This EmailId not vails" + JSON.stringify(errorMailId) + " Remain All Mail Send Successfully." };
-                } else {
-                    json.result = { 'Message': "Invitation Send successfully." };
-                }
-                res.send(json);
-            }
-        });
-    }, this);
+        }, this);
+    }
 }
-
-
-
