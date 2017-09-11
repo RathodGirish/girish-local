@@ -66,9 +66,9 @@ function _isUserValid(req, res, callback) {
     }
 }
 
-function _isValidEmail(emailField){
+function _isValidEmail(emailField) {
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    return reg.test(emailField.value);
+    return reg.test(emailField);
 }
 
 function _isUndefined(str) {
@@ -92,73 +92,74 @@ function _deleteImage(imageName, callback) {
 }
 
 
-
-
 function _sendEmail(emailId, callback) {
+    console.log("common function is called" + SEND_GRID_API_KEY);
     if (_isUndefined(SEND_GRID_API_KEY)) {
+        // console.log("i am in if");
         callback('API key not set for email sending', null);
     } else {
+        // console.log("i am in else ");
         var fromEmail = new helper.Email(CONSTANT.EMAIL_ID);
         var toEmail = new helper.Email(emailId);
         var subject = CONSTANT.MAIL_SUBJECT;
-        var content = new helper.Content('text/html', 
-        '<!DOCTYPE html >'+
-            '<html>'+
-            '<head>'+
-                '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>'+
-                '<meta name="viewport" content="width=device-width, initial-scale=1.0"/>'+
-                '<title>PULSE</title>'+
-            '</head>'+
-            '<body style="background:#E6E6E6; margin:0px; padding:0px;">'+
-                '<table border="0" cellspacing="0" cellpadding="0" align="center" style="width:100%;margin:0 auto; background:#fff;font-family:Open Sans,sans-serif; max-width:600px;">'+
-                    '<tbody>'+
-                        '<tr>'+
-                        '<td style="height:60px;background:#E6E6E6;"> </td>'+
-                        '</tr>'+
-                        '<tr>'+
-                        '<td style="background: #222222; height: 50px; padding: 10px 17px">'+
-                            '<table width="100%">'+
-                                '<tr>'+
-                                    '<td style="text-align:right; margin-right: 10px"> <a href="#" style="width:200px;color:#fff; text-decoration: none">VISIT PULSE APP</a> </td>'+
-                                '</tr>'+
-                            '</table>'+
-                        '</td>'+
-                        '</tr>'+
-                        '<tr>'+
-                        '<td style="font-size:0px;"> <img src="https://challenge.blob.core.windows.net/pulse/icon.png" alt="" title="" style="margin-top:-1px" height="250px" width="600"> </td>'+
-                        '</tr>'+
-                        '<tr>'+
-                        '<td style="height:40px;"> </td>'+
-                        '</tr>'+
-                        '<tr>'+
-                        '<td style="text-align:left; padding:0 50px;">'+
-                            '<h1 style="margin:0px; padding:0px; font-size:30px; color:#4e4e4e; font-weight:600; text-align:center;">Hi </h1>'+
-                        '</td>'+
-                        '</tr>'+
-                        '<tr>'+
-                        '<td style="height:10px;"> </td>'+
-                        '</tr>'+
-                        '<tr>'+
-                        '<td style="text-align:left; padding:0 50px;">'+
-                            '<h3 style="margin:0px; padding:0px; font-size:18px; color:#4e4e4e; font-weight:500; text-align:center; text-transform: uppercase;">Welcome to PULSE</h3>'+
-                        '</td>'+
-                        '</tr>'+
-                        '<tr>'+
-                        '<td style="height:34px;"> </td>'+
-                        '</tr>'+
-                        '<tr>'+
-                        '<td style="height:21px;"> </td>'+
-                        '</tr>'+
-                        
-                        '<tr>'+
-                        '<td style="padding:0; text-align:center; background: #222222; height: 30px"> </td>'+
-                        '</tr>'+
-                        '<tr>'+
-                        '<td style="height:60px;background:#E6E6E6;"> </td>'+
-                        '</tr>'+
-                    '</tbody>'+
-                '</table>'+
-            '</body>'+
+        var content = new helper.Content('text/html',
+            '<!DOCTYPE html >' +
+            '<html>' +
+            '<head>' +
+            '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>' +
+            '<meta name="viewport" content="width=device-width, initial-scale=1.0"/>' +
+            '<title>PULSE</title>' +
+            '</head>' +
+            '<body style="background:#E6E6E6; margin:0px; padding:0px;">' +
+            '<table border="0" cellspacing="0" cellpadding="0" align="center" style="width:100%;margin:0 auto; background:#fff;font-family:Open Sans,sans-serif; max-width:600px;">' +
+            '<tbody>' +
+            '<tr>' +
+            '<td style="height:60px;background:#E6E6E6;"> </td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td style="background: #222222; height: 50px; padding: 10px 17px">' +
+            '<table width="100%">' +
+            '<tr>' +
+            '<td style="text-align:right; margin-right: 10px"> <a href="#" style="width:200px;color:#fff; text-decoration: none">VISIT PULSE APP</a> </td>' +
+            '</tr>' +
+            '</table>' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td style="font-size:0px;"> <img src="https://challenge.blob.core.windows.net/pulse/icon.png" alt="" title="" style="margin-top:-1px" height="250px" width="600"> </td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td style="height:40px;"> </td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td style="text-align:left; padding:0 50px;">' +
+            '<h1 style="margin:0px; padding:0px; font-size:30px; color:#4e4e4e; font-weight:600; text-align:center;">Hi </h1>' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td style="height:10px;"> </td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td style="text-align:left; padding:0 50px;">' +
+            '<h3 style="margin:0px; padding:0px; font-size:18px; color:#4e4e4e; font-weight:500; text-align:center; text-transform: uppercase;">Welcome to PULSE</h3>' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td style="height:34px;"> </td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td style="height:21px;"> </td>' +
+            '</tr>' +
+
+            '<tr>' +
+            '<td style="padding:0; text-align:center; background: #222222; height: 30px"> </td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td style="height:60px;background:#E6E6E6;"> </td>' +
+            '</tr>' +
+            '</tbody>' +
+            '</table>' +
+            '</body>' +
             '</html>');
         var mail = new helper.Mail(fromEmail, subject, toEmail, content);
 
@@ -173,6 +174,7 @@ function _sendEmail(emailId, callback) {
             if (error) {
                 callback(error, null);
             } else {
+                // console.log("responce :" + JSON.stringify(response))
                 callback(null, response);
             }
         });

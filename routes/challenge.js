@@ -310,19 +310,20 @@ function _removeChallengeById(req, res) {
  * TODO : send Invitation
  * METHOD : POST
  */
+
 function _sendInvitation(req, res) {
     var emailIds = req.body.emailIds;
     var errorMailId = [];
     var json = {};
     var flage = false;
-    
-    if(!emailIds || emailIds.length <= 0){
+
+    if (!emailIds || emailIds.length <= 0) {
         json.status = '0';
         json.result = { 'Message': "Email Id is missing." };
         res.send(json);
     } else {
         emailIds.forEach(function (element, index) {
-            if(!COMMON.isValidEmail(element)){
+            if (!COMMON.isValidEmail(element)) {
                 errorMailId.push(element);
                 flage = true;
             } else {
@@ -335,8 +336,7 @@ function _sendInvitation(req, res) {
                         json.result = { 'Message': "Fail to send email from server side." };
                         res.send(json);
                     }
-                    
-                    console.log("mail data : " + JSON.stringify(data) + " element : " + element);
+                    // console.log("mail data : " + JSON.stringify(data) + " element : " + element);
                     if (index + 1 == req.body.emailIds.length) {
                         json.status = '1';
                         if (flage) {
